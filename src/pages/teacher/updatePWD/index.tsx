@@ -2,18 +2,12 @@ import * as React from 'react';
 
 import { PageContainer } from '@ant-design/pro-layout';
 import { Form, Input, Button, message } from 'antd';
-import { useModel } from 'umi';
 
-import { updatePWD } from '@/services/student';
-
-const UpdateUser: React.FC = () => {
+const UpdatePWD: React.FC = () => {
   const [form] = Form.useForm();
-  const { initialState, setInitialState } = useModel('@@initialState');
 
   const onFinish = (values: any) => {
-    updatePWD(initialState?.userID, values.password).then(() => {
-      message.success('密码修改成功');
-    });
+    console.log('Received values of form: ', values);
   };
 
   return (
@@ -73,4 +67,4 @@ const UpdateUser: React.FC = () => {
   );
 };
 
-export default UpdateUser;
+export default UpdatePWD;

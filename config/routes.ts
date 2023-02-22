@@ -24,8 +24,8 @@ export default [
     icon: 'calendar',
   },
   {
-    path: '/student/updateUser',
-    component: '@/pages/student/updateUser/index',
+    path: '/student/updatePWD',
+    component: '@/pages/student/updatePWD/index',
     exact: true,
     access: 'studentRouteFilter',
     name: '修改密码',
@@ -58,8 +58,8 @@ export default [
     icon: 'contacts',
   },
   {
-    path: '/teacher/updateUser',
-    component: '@/pages/teacher/updateUser/index',
+    path: '/teacher/updatePWD',
+    component: '@/pages/teacher/updatePWD/index',
     exact: true,
     access: 'teacherRouteFilter',
     name: '修改密码',

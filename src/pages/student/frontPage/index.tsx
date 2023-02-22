@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns } from '@ant-design/pro-table';
+import RcResizeObserver from 'rc-resize-observer';
 import ProTable from '@ant-design/pro-table';
 import { Rate } from 'antd';
 import { DrawerForm, ProCard } from '@ant-design/pro-components';
@@ -8,21 +9,19 @@ import { useModel } from 'umi';
 
 import { getWeekly } from '@/services/student';
 
-import DetailPage from './detail';
-
 const FrontPage: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
   const { initialState, setInitialState } = useModel('@@initialState');
-  const [detailVisible, setDetailVisible] = React.useState<boolean>(false);
-  const [selectedRows, setSelectedRows] = React.useState<API.Weekly[]>([]);
+  const [selectedRows, setSelectedRows] = React.useState<API.Weekly>();
+  const [responsive, setResponsive] = React.useState<boolean>(false);
 
-  const openDetail = React.useCallback((rows: API.Weekly[]) => {
+  const openDetail = React.useCallback((rows: API.Weekly) => {
     setSelectedRows(rows);
-    setDetailVisible(true);
+    setOpen(true);
   }, []);
 
   const closeDetail = React.useCallback(() => {
-    setDetailVisible(false);
+    setOpen(false);
   }, []);
 
   const columns: ProColumns<API.Weekly>[] = [
@@ -33,8 +32,7 @@ const FrontPage: React.FC = () => {
       render: (text, record, index, action) => (
         <a
           onClick={() => {
-            openDetail([record]);
-            setOpen(true);
+            openDetail(record);
           }}
         >
           {initialState?.username}
@@ -119,14 +117,45 @@ const FrontPage: React.FC = () => {
         />
         <DrawerForm
           onOpenChange={setOpen}
-          title="周报详情"
+          title="周报"
           width={window.screen.availWidth * 0.7}
           open={open}
+          onFinish={() => {
+            closeDetail();
+            return Promise.resolve();
+          }}
         >
           {open && (
-            <ProCard title="周报" colSpan="50%">
-              <div style={{ height: 360 }}>左侧内容</div>
-            </ProCard>
+            <RcResizeObserver
+              key="resize-observer"
+              onResize={(offset) => {
+                setResponsive(offset.width < 596);
+              }}
+            >
+              <ProCard
+                extra="2019年9月28日"
+                split={responsive ? 'horizontal' : 'vertical'}
+                bordered
+                headerBordered
+              >
+                <ProCard title="周报" colSpan="50%">
+                  <div
+                    style={{ height: 360 }}
+                    dangerouslySetInnerHTML={{
+                      __html: selectedRows?.content || '',
+                    }}
+                  ></div>
+                </ProCard>
+                <ProCard title="评论">
+                  <div
+                    style={{ height: 360 }}
+                    dangerouslySetInnerHTML={{
+                      __html: selectedRows?.review || '',
+                    }}
+                  ></div>
+                </ProCard>
+              </ProCard>
+            </RcResizeObserver>
           )}
         </DrawerForm>
       </PageContainer>
