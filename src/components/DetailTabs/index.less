@@ -1,0 +1,49 @@
+.detail {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 200px;
+  z-index: 999;
+  background-color: #fff;
+  border-left: 1px solid #e3e4e5;
+  transform: translate(100%, 0);
+  transition: transform 0.5s;
+
+  :global(.ant-tabs-nav) {
+    height: 46px;
+    background-color: #ecf0f2;
+  }
+
+  :global(> .ant-tabs-nav .ant-tabs-tab) {
+    padding: 6px 20px 13px 20px;
+    height: 20px;
+    box-sizing: content-box;
+    margin-top: 5px;
+
+    &:first-child {
+      background-color: #ecf0f2;
+    }
+  }
+
+  :global(.ant-tabs-tab .anticon) {
+    margin-right: 0;
+  }
+
+  :global(.ant-tabs-content-holder) {
+    height: 100%;
+    overflow-y: auto;
+    padding: 4px 20px 20px;
+  }
+}
+
+.close {
+  font-size: 24px;
+  width: 30px;
+  cursor: pointer;
+}
+
+.multiple {
+  text-align: center;
+  margin-top: 30%;
+}
