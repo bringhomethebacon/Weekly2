@@ -7,8 +7,23 @@ import { Button } from 'antd';
 import { useModel } from 'umi';
 import { getAllStudent } from '@/services/teacher';
 
+import CreateMember from '@/components/CreatMember';
+
 const Member: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const columns: ProColumns<API.Student>[] = [
     {
@@ -112,10 +127,14 @@ const Member: React.FC = () => {
             pageSize: 10,
           }}
           toolBarRender={() => [
-            <Button type="primary" key="create">
+            <Button type="primary" key="create" onClick={showModal}>
               添加用户
             </Button>,
           ]}
+        />
+        <CreateMember
+          open={isModalOpen}
+          onCancel={() => setIsModalOpen(false)}
         />
       </PageContainer>
     </>
