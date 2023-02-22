@@ -33,9 +33,8 @@ const FrontPage: React.FC = () => {
       render: (text, record, index, action) => (
         <a
           onClick={() => {
-            console.log(111, text, record, index, action);
             openDetail([record]);
-            // setOpen(true);
+            setOpen(true);
           }}
         >
           {initialState?.username}
@@ -117,12 +116,6 @@ const FrontPage: React.FC = () => {
           pagination={{
             pageSize: 10,
           }}
-        />
-        <DetailPage
-          rows={selectedRows}
-          visible={detailVisible}
-          onClose={closeDetail}
-          // callback={onRefresh}
         />
         <DrawerForm
           onOpenChange={setOpen}
