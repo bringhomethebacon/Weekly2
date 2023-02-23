@@ -17,8 +17,18 @@ import { getWeeklys } from '@/services/teacher';
 const WeeklyOverview: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
   const [responsive, setResponsive] = React.useState<boolean>(false);
-  const [weekly, setWeekly] = React.useState({} as API.Weekly);
+  const [weekly, setWeekly] = React.useState<Record<string, any>>({});
   const { initialState, setInitialState } = useModel('@@initialState');
+  const [rate, setRate] = React.useState<number>(0);
+
+  const openDetail = React.useCallback((rows: Record<string, any>) => {
+    setWeekly(rows);
+    setOpen(true);
+  }, []);
+
+  const closeDetail = React.useCallback(() => {
+    setOpen(false);
+  }, []);
 
   const columns: ProColumns<API.Weekly>[] = [
     {
@@ -27,8 +37,7 @@ const WeeklyOverview: React.FC = () => {
       render: (text, record, index, action) => (
         <a
           onClick={() => {
-            setWeekly(record);
-            setOpen(true);
+            openDetail(record);
           }}
         >
           {text}
@@ -81,14 +90,7 @@ const WeeklyOverview: React.FC = () => {
       dataIndex: 'Score',
       hideInSearch: true,
       render: (text, record, index, action) => {
-        return (
-          <Rate
-            defaultValue={record.score}
-            onChange={(value) => {
-              console.log(111, value);
-            }}
-          />
-        );
+        return <Rate defaultValue={record.score} disabled />;
       },
     },
   ];
@@ -97,14 +99,14 @@ const WeeklyOverview: React.FC = () => {
   const [editor, setEditor] = React.useState<IDomEditor | null>(null);
 
   // 编辑器内容
-  const [html, setHtml] = React.useState('<p>hello</p>');
+  const [html, setHtml] = React.useState('');
 
   // 模拟 ajax 请求，异步设置 html
-  React.useEffect(() => {
-    setTimeout(() => {
-      setHtml('<p>hello world</p>');
-    }, 1500);
-  }, []);
+  // React.useEffect(() => {
+  //   setTimeout(() => {
+  //     setHtml('<p>hello world</p>');
+  //   }, 1500);
+  // }, []);
 
   // 工具栏配置
   const toolbarConfig: Partial<IToolbarConfig> = {};
@@ -141,7 +143,6 @@ const WeeklyOverview: React.FC = () => {
             },
           }}
           request={(params: Record<string, any>) => {
-            console.log(111, params);
             const {
               pageSize,
               current,
@@ -171,6 +172,7 @@ const WeeklyOverview: React.FC = () => {
           width={window.screen.availWidth * 0.7}
           open={open}
           onFinish={async () => {
+            console.log('rate', rate, 'htm;', html);
             message.success('提交成功');
             return true;
           }}
@@ -189,24 +191,48 @@ const WeeklyOverview: React.FC = () => {
                 bordered
                 headerBordered
               >
-                <ProCard title="周报" colSpan="50%">
-                  <div style={{ height: 360 }}>左侧内容</div>
+                <ProCard title="周报" colSpan="40%">
+                  <div
+                    style={{ height: 360 }}
+                    dangerouslySetInnerHTML={{
+                      __html: weekly.Content || '',
+                    }}
+                  ></div>
                 </ProCard>
                 <ProCard title="评论">
-                  <Toolbar
-                    editor={editor}
-                    defaultConfig={toolbarConfig}
-                    mode="default"
-                    style={{ borderBottom: '1px solid #ccc' }}
-                  />
-                  <Editor
-                    defaultConfig={editorConfig}
-                    value={html}
-                    onCreated={setEditor}
-                    onChange={(editor) => setHtml(editor.getHtml())}
-                    mode="default"
-                    style={{ height: '500px', overflowY: 'hidden' }}
-                  />
+                  {weekly.Review ? (
+                    <div
+                      style={{ height: 360 }}
+                      dangerouslySetInnerHTML={{
+                        __html: weekly.Review,
+                      }}
+                    ></div>
+                  ) : (
+                    <>
+                      评分：
+                      <Rate
+                        defaultValue={0}
+                        onChange={(value) => {
+                          console.log(111, value);
+                          setRate(value);
+                        }}
+                      />
+                      <Toolbar
+                        editor={editor}
+                        defaultConfig={toolbarConfig}
+                        mode="default"
+                        style={{ borderBottom: '1px solid #ccc' }}
+                      />
+                      <Editor
+                        defaultConfig={editorConfig}
+                        value={html}
+                        onCreated={setEditor}
+                        onChange={(editor) => setHtml(editor.getHtml())}
+                        mode="default"
+                        style={{ height: '500px', overflowY: 'hidden' }}
+                      />
+                    </>
+                  )}
                 </ProCard>
               </ProCard>
             </RcResizeObserver>
