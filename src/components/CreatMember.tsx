@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { Modal, Form, Input, message } from 'antd';
+import { useModel } from 'umi';
+
+import { creaetStudent } from '@/services/teacher';
 
 interface CreateMemberProps {
   open: boolean;
@@ -7,6 +10,7 @@ interface CreateMemberProps {
 }
 const CreateMember: React.FC<CreateMemberProps> = ({ open, onCancel }) => {
   const [form] = Form.useForm();
+  const { initialState, setInitialState } = useModel('@@initialState');
 
   return (
     <Modal
@@ -18,12 +22,13 @@ const CreateMember: React.FC<CreateMemberProps> = ({ open, onCancel }) => {
         form
           .validateFields()
           .then((values) => {
-            // createUser({
-            //   studentid: values.student_id,
-            //   username: values.name,
-            // }).catch(() => {
-            //   message.error("学号已存在");
-            // });
+            creaetStudent(
+              initialState?.userID,
+              values.student_id,
+              values.name,
+            ).catch(() => {
+              message.error('学号已存在');
+            });
             form.resetFields();
             onCancel();
           })

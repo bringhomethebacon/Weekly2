@@ -2,12 +2,23 @@ import * as React from 'react';
 
 import { PageContainer } from '@ant-design/pro-layout';
 import { Form, Input, Button, message } from 'antd';
+import { useModel } from 'umi';
+
+import { updatePWD } from '@/services/teacher';
 
 const UpdatePWD: React.FC = () => {
   const [form] = Form.useForm();
+  const { initialState, setInitialState } = useModel('@@initialState');
 
   const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+    updatePWD(
+      initialState?.userID,
+      initialState?.userID,
+      values.password,
+      'teacher',
+    ).then(() => {
+      message.success('修改成功');
+    });
   };
 
   return (

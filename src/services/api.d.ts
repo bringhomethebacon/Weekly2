@@ -12,7 +12,6 @@ declare namespace API {
   interface WeeklyList {
     data?: Weekly[];
     total?: number;
-    success: boolean;
     pageSize?: number;
     current?: number;
   }

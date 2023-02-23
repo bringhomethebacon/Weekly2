@@ -5,20 +5,25 @@ import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import RcResizeObserver from 'rc-resize-observer';
 import { message, Rate } from 'antd';
+import { useModel } from 'umi';
 
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
 
 import '@wangeditor/editor/dist/css/style.css';
 
+import { getWeeklys } from '@/services/teacher';
+
 const WeeklyOverview: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
   const [responsive, setResponsive] = React.useState<boolean>(false);
   const [weekly, setWeekly] = React.useState({} as API.Weekly);
+  const { initialState, setInitialState } = useModel('@@initialState');
+
   const columns: ProColumns<API.Weekly>[] = [
     {
       title: '姓名',
-      dataIndex: 'name',
+      dataIndex: 'StudentName',
       render: (text, record, index, action) => (
         <a
           onClick={() => {
@@ -32,21 +37,21 @@ const WeeklyOverview: React.FC = () => {
     },
     {
       title: 'ID',
-      dataIndex: 'id',
+      dataIndex: 'StudentID',
       tooltip: 'id具有唯一性',
       hideInSearch: true,
     },
     {
       title: '提交日期',
-      dataIndex: 'created_at',
+      dataIndex: 'CreateAt',
       valueType: 'date',
       hideInSearch: true,
     },
     {
       title: '提交日期',
-      dataIndex: 'created_at',
+      dataIndex: 'CreateAt',
       hideInTable: true,
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       search: {
         transform: (value) => {
           return {
@@ -58,26 +63,22 @@ const WeeklyOverview: React.FC = () => {
     },
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'Status',
       valueType: 'select',
       valueEnum: {
-        0: {
-          text: '未提交',
-          status: 'Error',
-        },
         1: {
           text: '已提交',
           status: 'Default',
         },
         2: {
-          text: '未提交',
+          text: '已评论',
           status: 'Success',
         },
       },
     },
     {
       title: '评分',
-      dataIndex: 'score',
+      dataIndex: 'Score',
       hideInSearch: true,
       render: (text, record, index, action) => {
         return (
@@ -127,8 +128,42 @@ const WeeklyOverview: React.FC = () => {
       <PageContainer>
         <ProTable<API.Weekly, API.PageParams>
           columns={columns}
-          // request={getWeeklyList}
+          form={{
+            // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
+            syncToUrl: (values, type) => {
+              if (type === 'get') {
+                return {
+                  ...values,
+                  created_at: [values.startTime, values.endTime],
+                };
+              }
+              return values;
+            },
+          }}
+          request={(params: Record<string, any>) => {
+            console.log(111, params);
+            const {
+              pageSize,
+              current,
+              status,
+              student_name,
+              start_time,
+              end_time,
+            } = params;
+            return getWeeklys(
+              initialState?.userID,
+              pageSize,
+              current,
+              status,
+              student_name,
+              start_time,
+              end_time,
+            );
+          }}
           rowKey="id"
+          pagination={{
+            pageSize: 10,
+          }}
         />
         <DrawerForm
           onOpenChange={setOpen}

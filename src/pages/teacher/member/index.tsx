@@ -30,11 +30,13 @@ const Member: React.FC = () => {
       title: '姓名',
       key: 'student_name',
       dataIndex: 'student_name',
+      editable: false,
     },
     {
       title: '学号',
       key: 'id',
       dataIndex: 'id',
+      editable: false,
     },
     {
       title: '联系方式',

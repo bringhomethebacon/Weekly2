@@ -2,6 +2,9 @@ import * as React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { StatisticProps } from '@ant-design/pro-components';
 import { ProCard, StatisticCard } from '@ant-design/pro-components';
+import ProTable from '@ant-design/pro-table';
+import type { ProColumns } from '@ant-design/pro-table';
+import { Rate } from 'antd';
 
 const { Statistic } = StatisticCard;
 
@@ -13,6 +16,34 @@ const items = [
 ];
 
 const HomePage: React.FC = () => {
+  const columns: ProColumns<API.Weekly>[] = [
+    {
+      title: '姓名',
+      dataIndex: 'name',
+    },
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      tooltip: 'id具有唯一性',
+      hideInSearch: true,
+    },
+    {
+      title: '评分',
+      dataIndex: 'score',
+      hideInSearch: true,
+      render: (text, record, index, action) => {
+        return (
+          <Rate
+            defaultValue={record.score}
+            onChange={(value) => {
+              console.log(111, value);
+            }}
+          />
+        );
+      },
+    },
+  ];
+
   return (
     <PageContainer>
       <ProCard
@@ -39,17 +70,7 @@ const HomePage: React.FC = () => {
                 />
               ),
               children: (
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: '#fafafa',
-                    height: 500,
-                  }}
-                >
-                  关联展示内容 {item.title}
-                </div>
+                <ProTable columns={columns} rowKey="id" search={false} />
               ),
             };
           }),
