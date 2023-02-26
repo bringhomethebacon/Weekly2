@@ -165,15 +165,18 @@ const WeeklyOverview: React.FC = () => {
           width={window.screen.availWidth * 0.7}
           open={open}
           onFinish={async () => {
-            comment(weekly.ID, html, rate)
-              .then(() => {
-                message.success('提交成功');
-              })
-              .catch(() => {
-                message.error('提交失败');
-              });
-
-            return true;
+            if (rate > 0) {
+              comment(weekly.ID, html, rate)
+                .then(() => {
+                  message.success('提交成功');
+                })
+                .catch(() => {
+                  message.error('提交失败');
+                })
+                .finally(() => closeDetail());
+            } else {
+              message.error('请先进行评分');
+            }
           }}
         >
           {open && (
@@ -185,7 +188,6 @@ const WeeklyOverview: React.FC = () => {
             >
               <ProCard
                 title="周报"
-                extra="2019年9月28日"
                 split={responsive ? 'horizontal' : 'vertical'}
                 bordered
                 headerBordered
