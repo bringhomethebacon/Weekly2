@@ -59,8 +59,8 @@ const FrontPage: React.FC = () => {
       search: {
         transform: (value) => {
           return {
-            startTime: value[0],
-            endTime: value[1],
+            startTime: value?.[0],
+            endTime: value?.[1],
           };
         },
       },
@@ -95,9 +95,15 @@ const FrontPage: React.FC = () => {
         <ProTable<API.Weekly, API.PageParams>
           rowKey="id"
           columns={columns}
-          request={(params) => {
-            const { current, pageSize } = params;
-            return getWeekly(initialState?.userID, pageSize, current);
+          request={(params: Record<string, any>) => {
+            const { current, pageSize, startTime, endTime } = params;
+            return getWeekly(
+              initialState?.userID,
+              pageSize,
+              current,
+              startTime,
+              endTime,
+            );
           }}
           form={{
             // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
