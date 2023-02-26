@@ -12,7 +12,6 @@ const Weekly: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
 
   const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
     createWeekly(initialState!.userID, values.richEditor, 1)
       .then(() => {
         message.success('提交成功');

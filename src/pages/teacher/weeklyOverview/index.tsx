@@ -12,7 +12,7 @@ import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
 
 import '@wangeditor/editor/dist/css/style.css';
 
-import { getWeeklys } from '@/services/teacher';
+import { getWeeklys, comment } from '@/services/teacher';
 
 const WeeklyOverview: React.FC = () => {
   const [open, setOpen] = React.useState<boolean>(false);
@@ -30,7 +30,7 @@ const WeeklyOverview: React.FC = () => {
     setOpen(false);
   }, []);
 
-  const columns: ProColumns<API.Weekly>[] = [
+  const columns: ProColumns<Record<string, any>>[] = [
     {
       title: '姓名',
       dataIndex: 'StudentName',
@@ -90,7 +90,7 @@ const WeeklyOverview: React.FC = () => {
       dataIndex: 'Score',
       hideInSearch: true,
       render: (text, record, index, action) => {
-        return <Rate defaultValue={record.score} disabled />;
+        return <Rate value={record.Score} disabled />;
       },
     },
   ];
@@ -100,13 +100,6 @@ const WeeklyOverview: React.FC = () => {
 
   // 编辑器内容
   const [html, setHtml] = React.useState('');
-
-  // 模拟 ajax 请求，异步设置 html
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     setHtml('<p>hello world</p>');
-  //   }, 1500);
-  // }, []);
 
   // 工具栏配置
   const toolbarConfig: Partial<IToolbarConfig> = {};
@@ -128,7 +121,7 @@ const WeeklyOverview: React.FC = () => {
   return (
     <>
       <PageContainer>
-        <ProTable<API.Weekly, API.PageParams>
+        <ProTable<Record<string, any>, API.PageParams>
           columns={columns}
           form={{
             // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
@@ -146,22 +139,22 @@ const WeeklyOverview: React.FC = () => {
             const {
               pageSize,
               current,
-              status,
-              student_name,
-              start_time,
-              end_time,
+              Status,
+              studenName,
+              startTime,
+              endTime,
             } = params;
             return getWeeklys(
               initialState?.userID,
               pageSize,
               current,
-              status,
-              student_name,
-              start_time,
-              end_time,
+              Status,
+              studenName,
+              startTime,
+              endTime,
             );
           }}
-          rowKey="id"
+          rowKey="ID"
           pagination={{
             pageSize: 10,
           }}
@@ -172,8 +165,14 @@ const WeeklyOverview: React.FC = () => {
           width={window.screen.availWidth * 0.7}
           open={open}
           onFinish={async () => {
-            console.log('rate', rate, 'htm;', html);
-            message.success('提交成功');
+            comment(weekly.ID, html, rate)
+              .then(() => {
+                message.success('提交成功');
+              })
+              .catch(() => {
+                message.error('提交失败');
+              });
+
             return true;
           }}
         >
@@ -213,7 +212,6 @@ const WeeklyOverview: React.FC = () => {
                       <Rate
                         defaultValue={0}
                         onChange={(value) => {
-                          console.log(111, value);
                           setRate(value);
                         }}
                       />

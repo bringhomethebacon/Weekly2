@@ -34,6 +34,7 @@ const HeaderDropdown: React.FC = () => {
       >
         <Button type="text">
           <UserOutlined />
+          {initialState?.username}
         </Button>
       </Dropdown>
     </Space>
