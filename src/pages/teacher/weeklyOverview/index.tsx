@@ -64,8 +64,8 @@ const WeeklyOverview: React.FC = () => {
       search: {
         transform: (value) => {
           return {
-            startTime: value[0],
-            endTime: value[1],
+            startTime: value?.[0],
+            endTime: value?.[1],
           };
         },
       },
@@ -140,7 +140,7 @@ const WeeklyOverview: React.FC = () => {
               pageSize,
               current,
               Status,
-              studenName,
+              StudentName,
               startTime,
               endTime,
             } = params;
@@ -149,7 +149,7 @@ const WeeklyOverview: React.FC = () => {
               pageSize,
               current,
               Status,
-              studenName,
+              StudentName,
               startTime,
               endTime,
             );
