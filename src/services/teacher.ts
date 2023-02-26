@@ -32,7 +32,6 @@ export async function creaetStudent(
     data: {
       id,
       student_name,
-      role: 'student',
     },
   });
 }

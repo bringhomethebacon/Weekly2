@@ -4,7 +4,7 @@ import type { ProColumns } from '@ant-design/pro-table';
 import { Rate } from 'antd';
 import { useModel } from 'umi';
 
-import { getWeeklys, unCommit } from '@/services/teacher';
+import { getWeeklys, unCommit, getAllStudent } from '@/services/teacher';
 
 interface HomePageTableProps {
   value: number;
@@ -19,26 +19,45 @@ const HomePageTable: React.FC<HomePageTableProps> = ({
 }) => {
   const { initialState, setInitialState } = useModel('@@initialState');
 
-  const columns: ProColumns<Record<string, any>>[] = [
-    {
-      title: '姓名',
-      dataIndex: 'StudentName',
-    },
-    {
-      title: 'ID',
-      dataIndex: 'StudentID',
-      tooltip: 'id具有唯一性',
-      hideInSearch: true,
-    },
-    {
-      title: '评分',
-      dataIndex: 'Score',
-      hideInSearch: true,
-      render: (text, record, index, action) => {
-        return <Rate disabled value={record.Score} />;
-      },
-    },
-  ];
+  const columns: ProColumns<Record<string, any>>[] =
+    value !== 0
+      ? [
+          {
+            title: '姓名',
+            dataIndex: 'StudentName',
+          },
+          {
+            title: 'ID',
+            dataIndex: 'StudentID',
+            tooltip: 'id具有唯一性',
+          },
+          {
+            title: '评分',
+            dataIndex: 'Score',
+            render: (text, record, index, action) => {
+              return <Rate disabled value={record.Score} />;
+            },
+          },
+        ]
+      : [
+          {
+            title: '姓名',
+            key: 'student_name',
+            dataIndex: 'student_name',
+          },
+          {
+            title: '学号',
+            key: 'id',
+            dataIndex: 'id',
+          },
+          {
+            title: '评分',
+            dataIndex: 'Score',
+            render: (text, record, index, action) => {
+              return <Rate disabled value={record.Score} />;
+            },
+          },
+        ];
 
   if (value === 0) {
     return (
@@ -50,15 +69,13 @@ const HomePageTable: React.FC<HomePageTableProps> = ({
           pageSize: 10,
         }}
         request={(params: Record<string, any>) => {
-          const { pageSize, current, status, student_name } = params;
-          return getWeeklys(
+          const { current, pageSize, student_name, id } = params;
+          return getAllStudent(
             initialState?.userID,
             pageSize,
             current,
-            status,
             student_name,
-            start_time,
-            end_time,
+            id,
           );
         }}
       />
