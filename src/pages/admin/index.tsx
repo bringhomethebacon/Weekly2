@@ -13,6 +13,8 @@ const Teacher: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
+  const ref = React.useRef<any>();
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -23,6 +25,7 @@ const Teacher: React.FC = () => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    console.log(111, typeof ref.current.reload());
   };
 
   const columns: ProColumns<Record<string, any>>[] = [
@@ -46,9 +49,13 @@ const Teacher: React.FC = () => {
         <a
           key="editable"
           onClick={() => {
-            deleteTeacher(Number(record.id)).then(() => {
-              message.success('删除成功');
-            });
+            deleteTeacher(Number(record.id))
+              .then(() => {
+                message.success('删除成功');
+              })
+              .finally(() => {
+                ref.current.reload();
+              });
           }}
         >
           删除
@@ -60,6 +67,7 @@ const Teacher: React.FC = () => {
     <>
       <PageContainer>
         <ProTable<Record<string, any>, API.PageParams>
+          actionRef={ref}
           rowKey="id"
           search={false}
           columns={columns}
@@ -78,7 +86,8 @@ const Teacher: React.FC = () => {
         />
         <CreateTeacher
           open={isModalOpen}
-          onCancel={() => setIsModalOpen(false)}
+          onCancel={() => handleCancel()}
+          onLoad={ref.current.reload()}
         />
       </PageContainer>
     </>

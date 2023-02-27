@@ -7,6 +7,7 @@ import { createTeacher } from '@/services/admin';
 interface CreateTeacherProps {
   open: boolean;
   onCancel: () => void;
+  onLoad?: any;
 }
 const CreateTeacher: React.FC<CreateTeacherProps> = ({ open, onCancel }) => {
   const [form] = Form.useForm();
@@ -21,9 +22,13 @@ const CreateTeacher: React.FC<CreateTeacherProps> = ({ open, onCancel }) => {
         form
           .validateFields()
           .then((values) => {
-            createTeacher(values.teacher_id, values.name).catch(() => {
-              message.error('教师编号已存在');
-            });
+            createTeacher(values.teacher_id, values.name)
+              .catch(() => {
+                message.error('教师编号已存在');
+              })
+              .finally(() => {
+                onload;
+              });
             form.resetFields();
             onCancel();
           })
