@@ -9,9 +9,7 @@ import { getAllStudent } from '@/services/teacher';
 
 import CreateMember from '@/components/CreatMember';
 
-import { updateStudent } from '@/services/teacher';
-
-const Member: React.FC = () => {
+const Teacher: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
@@ -27,7 +25,7 @@ const Member: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const columns: ProColumns<Record<string, any>>[] = [
+  const columns: ProColumns<API.Student>[] = [
     {
       title: '姓名',
       key: 'student_name',
@@ -101,28 +99,17 @@ const Member: React.FC = () => {
       ],
     },
   ];
-
   return (
     <>
       <PageContainer>
-        <ProTable<Record<string, any>, API.PageParams>
+        <ProTable<API.Student, API.PageParams>
           rowKey="id"
           editable={{
-            onSave: (key: RecordKey, row: Record<string, any>) => {
+            onSave: (key: RecordKey, row: API.Student) => {
               console.log(key, row, 'onSave');
-              return updateStudent(
-                initialState?.userID,
-                row.id,
-                row?.phone,
-                row?.grade,
-                row?.category,
-                row?.specialized,
-                row?.research_direction,
-                row?.gender,
-                row?.native_place,
-              );
+              return Promise.resolve();
             },
-            onDelete: (key: RecordKey, row: Record<string, any>) => {
+            onDelete: (key: RecordKey, row: API.Student) => {
               console.log(key, row, 'onDelete');
               return Promise.resolve();
             },
@@ -156,4 +143,4 @@ const Member: React.FC = () => {
   );
 };
 
-export default Member;
+export default Teacher;

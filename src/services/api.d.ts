@@ -19,7 +19,7 @@ declare namespace API {
   interface Student {
     id: number; // 学号
     name: string; // 姓名
-    phone_number?: number; // 联系方式
+    phone?: number; // 联系方式
     grade?: string; // 年级
     category?: string; // 类别
     specialized?: string; // 专业

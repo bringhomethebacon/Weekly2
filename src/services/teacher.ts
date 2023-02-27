@@ -116,3 +116,33 @@ export async function getNumbers(
     },
   });
 }
+
+// 修改学生信息
+export async function updateStudent(
+  teacher_id: number,
+  id: number,
+  phone?: number,
+  grade?: string,
+  category?: string,
+  specialized?: string,
+  research_direction?: string,
+  gender?: string,
+  native_place?: string,
+) {
+  return request('/api/teacher/update/student', {
+    method: 'put',
+    params: {
+      teacher_id,
+    },
+    data: {
+      id,
+      phone,
+      grade,
+      category,
+      specialized,
+      research_direction,
+      gender,
+      native_place,
+    },
+  });
+}

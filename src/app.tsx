@@ -1,10 +1,4 @@
-import * as React from 'react';
-// import {
-//   BasicLayoutProps,
-//   Settings as LayoutSettings,
-// } from '@ant-design/pro-layout';
 import HeaderDropdown from './components/HeaderDropdown';
-import type { RunTimeLayoutConfig } from 'umi';
 
 // 在这个文件中做项目的运行时配置
 import { history, RequestConfig } from 'umi';
