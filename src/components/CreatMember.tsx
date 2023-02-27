@@ -7,8 +7,13 @@ import { creaetStudent } from '@/services/teacher';
 interface CreateMemberProps {
   open: boolean;
   onCancel: () => void;
+  onLoad?: any;
 }
-const CreateMember: React.FC<CreateMemberProps> = ({ open, onCancel }) => {
+const CreateMember: React.FC<CreateMemberProps> = ({
+  open,
+  onCancel,
+  onLoad,
+}) => {
   const [form] = Form.useForm();
   const { initialState, setInitialState } = useModel('@@initialState');
 
@@ -33,9 +38,13 @@ const CreateMember: React.FC<CreateMemberProps> = ({ open, onCancel }) => {
               values?.research_direction,
               values?.gender,
               values?.native_place,
-            ).catch(() => {
-              message.error('学号已存在');
-            });
+            )
+              .catch(() => {
+                message.error('学号已存在');
+              })
+              .finally(() => {
+                onLoad();
+              });
             form.resetFields();
             onCancel();
           })

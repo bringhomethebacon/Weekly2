@@ -21,6 +21,8 @@ const WeeklyOverview: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const [rate, setRate] = React.useState<number>(0);
 
+  const ref = React.useRef<any>();
+
   const openDetail = React.useCallback((rows: Record<string, any>) => {
     setWeekly(rows);
     setOpen(true);
@@ -28,6 +30,7 @@ const WeeklyOverview: React.FC = () => {
 
   const closeDetail = React.useCallback(() => {
     setOpen(false);
+    ref.current.reload();
   }, []);
 
   const columns: ProColumns<Record<string, any>>[] = [
@@ -122,6 +125,7 @@ const WeeklyOverview: React.FC = () => {
     <>
       <PageContainer>
         <ProTable<Record<string, any>, API.PageParams>
+          actionRef={ref}
           columns={columns}
           form={{
             // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下

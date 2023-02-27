@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { RecordKey } from '@ant-design/pro-utils/es/useEditableArray';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { useModel } from 'umi';
 import { getAllStudent } from '@/services/teacher';
 
@@ -14,6 +14,8 @@ import { updateStudent, deleteStudent } from '@/services/teacher';
 const Member: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  const ref = React.useRef<any>();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -103,6 +105,7 @@ const Member: React.FC = () => {
     <>
       <PageContainer>
         <ProTable<Record<string, any>, API.PageParams>
+          actionRef={ref}
           rowKey="id"
           editable={{
             onSave: (key: RecordKey, row: Record<string, any>) => {
@@ -117,10 +120,18 @@ const Member: React.FC = () => {
                 row?.research_direction,
                 row?.gender,
                 row?.native_place,
-              );
+              ).finally(() => {
+                ref.current.reload();
+              });
             },
             onDelete: (key: RecordKey, row: Record<string, any>) => {
-              return deleteStudent(row.id);
+              return deleteStudent(row.id)
+                .then(() => {
+                  message.success('删除成功');
+                })
+                .finally(() => {
+                  ref.current.reload();
+                });
             },
           }}
           columns={columns}
@@ -145,7 +156,8 @@ const Member: React.FC = () => {
         />
         <CreateMember
           open={isModalOpen}
-          onCancel={() => setIsModalOpen(false)}
+          onCancel={() => handleCancel()}
+          onLoad={() => ref.current.reload()}
         />
       </PageContainer>
     </>

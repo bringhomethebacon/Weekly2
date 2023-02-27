@@ -25,7 +25,6 @@ const Teacher: React.FC = () => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    console.log(111, typeof ref.current.reload());
   };
 
   const columns: ProColumns<Record<string, any>>[] = [
@@ -87,7 +86,7 @@ const Teacher: React.FC = () => {
         <CreateTeacher
           open={isModalOpen}
           onCancel={() => handleCancel()}
-          onLoad={ref.current.reload()}
+          onLoad={() => ref.current.reload()}
         />
       </PageContainer>
     </>

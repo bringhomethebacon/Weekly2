@@ -9,7 +9,11 @@ interface CreateTeacherProps {
   onCancel: () => void;
   onLoad?: any;
 }
-const CreateTeacher: React.FC<CreateTeacherProps> = ({ open, onCancel }) => {
+const CreateTeacher: React.FC<CreateTeacherProps> = ({
+  open,
+  onCancel,
+  onLoad,
+}) => {
   const [form] = Form.useForm();
 
   return (
@@ -27,7 +31,7 @@ const CreateTeacher: React.FC<CreateTeacherProps> = ({ open, onCancel }) => {
                 message.error('教师编号已存在');
               })
               .finally(() => {
-                onload;
+                onLoad();
               });
             form.resetFields();
             onCancel();
