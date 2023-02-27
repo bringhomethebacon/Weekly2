@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Modal, Form, Input, message, Select } from 'antd';
 import { useModel } from 'umi';
 
-import { creaetStudent } from '@/services/teacher';
+import { createTeacher } from '@/services/admin';
 
 interface CreateTeacherProps {
   open: boolean;
@@ -10,7 +10,6 @@ interface CreateTeacherProps {
 }
 const CreateTeacher: React.FC<CreateTeacherProps> = ({ open, onCancel }) => {
   const [form] = Form.useForm();
-  const { initialState, setInitialState } = useModel('@@initialState');
 
   return (
     <Modal
@@ -22,11 +21,7 @@ const CreateTeacher: React.FC<CreateTeacherProps> = ({ open, onCancel }) => {
         form
           .validateFields()
           .then((values) => {
-            creaetStudent(
-              initialState?.userID,
-              values.teacher_id,
-              values.name,
-            ).catch(() => {
+            createTeacher(values.teacher_id, values.name).catch(() => {
               message.error('教师编号已存在');
             });
             form.resetFields();

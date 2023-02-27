@@ -2,12 +2,12 @@ import * as React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { RecordKey } from '@ant-design/pro-utils/es/useEditableArray';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { useModel } from 'umi';
-import { getAllStudent } from '@/services/teacher';
 
-import CreateTeacher from '@/components/CreatMember';
+import CreateTeacher from '@/components/CreateTeacher';
+
+import { getTeachers, deleteTeacher } from '@/services/admin';
 
 const Teacher: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
@@ -46,10 +46,12 @@ const Teacher: React.FC = () => {
         <a
           key="editable"
           onClick={() => {
-            action?.startEditable?.(record.id);
+            deleteTeacher(Number(record.id)).then(() => {
+              message.success('删除成功');
+            });
           }}
         >
-          编辑
+          删除
         </a>,
       ],
     },
@@ -60,26 +62,10 @@ const Teacher: React.FC = () => {
         <ProTable<Record<string, any>, API.PageParams>
           rowKey="id"
           search={false}
-          editable={{
-            onSave: (key: RecordKey, row: Record<string, any>) => {
-              console.log(key, row, 'onSave');
-              return Promise.resolve();
-            },
-            onDelete: (key: RecordKey, row: Record<string, any>) => {
-              console.log(key, row, 'onDelete');
-              return Promise.resolve();
-            },
-          }}
           columns={columns}
           request={(params: Record<string, any>) => {
-            const { current, pageSize, student_name, id } = params;
-            return getAllStudent(
-              initialState?.userID,
-              pageSize,
-              current,
-              student_name,
-              id,
-            );
+            const { current, pageSize } = params;
+            return getTeachers(pageSize, current);
           }}
           pagination={{
             pageSize: 10,

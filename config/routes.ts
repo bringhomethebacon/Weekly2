@@ -65,4 +65,14 @@ export default [
     name: '修改密码',
     icon: 'edit',
   },
+
+  // 管理员页面
+  {
+    path: '/admin',
+    component: '@/pages/admin/index',
+    exact: true,
+    access: 'adminRouteFilter',
+    name: '管理教师',
+    icon: 'edit',
+  },
 ];

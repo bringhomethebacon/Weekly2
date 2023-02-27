@@ -18,7 +18,7 @@ const Login = () => {
     values: Record<'username' | 'password' | 'role', string>,
   ) => {
     // 修改全局的initialState, 让layout有机会进入主面板
-    login(Number(values.username), values.password, values.role)
+    login(values.username, values.password, values.role)
       .then((res) => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('name', res.username);
@@ -33,12 +33,17 @@ const Login = () => {
         if (res.role === 'student') {
           setTimeout(() => {
             history.push('/student/frontPage');
-          }, 1000);
+          }, 500);
         }
         if (res.role === 'teacher') {
           setTimeout(() => {
             history.push('/teacher/homePage');
-          }, 1000);
+          }, 500);
+        }
+        if (res.role === 'root') {
+          setTimeout(() => {
+            history.push('/admin');
+          }, 500);
         }
       })
       .catch(() => {
