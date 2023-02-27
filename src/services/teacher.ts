@@ -163,7 +163,7 @@ export async function updateStudent(
 
 // 删除学生
 export async function deleteStudent(id: number) {
-  return request('/api/delete/student', {
+  return request('/api/teacher/delete/student', {
     method: 'delete',
     params: {
       id,

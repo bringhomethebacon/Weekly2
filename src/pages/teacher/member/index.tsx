@@ -9,7 +9,7 @@ import { getAllStudent } from '@/services/teacher';
 
 import CreateMember from '@/components/CreatMember';
 
-import { updateStudent } from '@/services/teacher';
+import { updateStudent, deleteStudent } from '@/services/teacher';
 
 const Member: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
@@ -95,9 +95,6 @@ const Member: React.FC = () => {
         >
           编辑
         </a>,
-        <a key="delete" onClick={() => {}}>
-          删除
-        </a>,
       ],
     },
   ];
@@ -123,8 +120,7 @@ const Member: React.FC = () => {
               );
             },
             onDelete: (key: RecordKey, row: Record<string, any>) => {
-              console.log(key, row, 'onDelete');
-              return Promise.resolve();
+              return deleteStudent(row.id);
             },
           }}
           columns={columns}

@@ -7,7 +7,7 @@ import { Button } from 'antd';
 import { useModel } from 'umi';
 import { getAllStudent } from '@/services/teacher';
 
-import CreateMember from '@/components/CreatMember';
+import CreateTeacher from '@/components/CreatMember';
 
 const Teacher: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
@@ -25,11 +25,11 @@ const Teacher: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const columns: ProColumns<API.Student>[] = [
+  const columns: ProColumns<Record<string, any>>[] = [
     {
       title: '姓名',
-      key: 'student_name',
-      dataIndex: 'student_name',
+      key: 'teacher_name',
+      dataIndex: 'teacher_name',
       editable: false,
     },
     {
@@ -37,48 +37,6 @@ const Teacher: React.FC = () => {
       key: 'id',
       dataIndex: 'id',
       editable: false,
-    },
-    {
-      title: '联系方式',
-      key: 'phone',
-      dataIndex: 'phone',
-      hideInSearch: true,
-    },
-    {
-      title: '年级',
-      key: 'grade',
-      dataIndex: 'grade',
-      hideInSearch: true,
-    },
-    {
-      title: '类别',
-      key: 'category',
-      dataIndex: 'category',
-      hideInSearch: true,
-    },
-    {
-      title: '专业',
-      key: 'specialized',
-      dataIndex: 'specialized',
-      hideInSearch: true,
-    },
-    {
-      title: '研究方向',
-      key: 'research_direction',
-      dataIndex: 'research_direction',
-      hideInSearch: true,
-    },
-    {
-      title: '性别',
-      key: 'gender',
-      dataIndex: 'gender',
-      hideInSearch: true,
-    },
-    {
-      title: '籍贯',
-      key: 'native_place',
-      dataIndex: 'native_place',
-      hideInSearch: true,
     },
     {
       title: '操作',
@@ -93,23 +51,21 @@ const Teacher: React.FC = () => {
         >
           编辑
         </a>,
-        <a key="delete" onClick={() => {}}>
-          删除
-        </a>,
       ],
     },
   ];
   return (
     <>
       <PageContainer>
-        <ProTable<API.Student, API.PageParams>
+        <ProTable<Record<string, any>, API.PageParams>
           rowKey="id"
+          search={false}
           editable={{
-            onSave: (key: RecordKey, row: API.Student) => {
+            onSave: (key: RecordKey, row: Record<string, any>) => {
               console.log(key, row, 'onSave');
               return Promise.resolve();
             },
-            onDelete: (key: RecordKey, row: API.Student) => {
+            onDelete: (key: RecordKey, row: Record<string, any>) => {
               console.log(key, row, 'onDelete');
               return Promise.resolve();
             },
@@ -134,7 +90,7 @@ const Teacher: React.FC = () => {
             </Button>,
           ]}
         />
-        <CreateMember
+        <CreateTeacher
           open={isModalOpen}
           onCancel={() => setIsModalOpen(false)}
         />
