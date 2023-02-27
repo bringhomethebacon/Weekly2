@@ -25,6 +25,13 @@ export async function creaetStudent(
   teacher_id: number,
   id: number,
   student_name: string,
+  phone?: number,
+  grade?: string,
+  category?: string,
+  specialized?: string,
+  research_direction?: string,
+  gender?: string,
+  native_place?: string,
 ) {
   return request('/api/teacher/create/student', {
     method: 'post',
@@ -32,6 +39,13 @@ export async function creaetStudent(
     data: {
       id,
       student_name,
+      phone,
+      grade,
+      category,
+      specialized,
+      research_direction,
+      gender,
+      native_place,
     },
   });
 }
@@ -143,6 +157,16 @@ export async function updateStudent(
       research_direction,
       gender,
       native_place,
+    },
+  });
+}
+
+// 删除学生
+export async function deleteStudent(id: number) {
+  return request('/api/delete/student', {
+    method: 'delete',
+    params: {
+      id,
     },
   });
 }
