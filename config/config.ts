@@ -10,6 +10,7 @@ export default defineConfig({
     // 配置开启antd组件库的使用
     dark: false,
   },
+  base: '/',
   layout: {
     // 开启项目视图骨架配置
     name: '周报管理系统',

@@ -1,5 +1,5 @@
 export default [
-  { path: '/', redirect: '/login', exact: true },
+  { path: '/', component: '@/index', exact: true },
   {
     path: '/login',
     component: '@/pages/login/index',
