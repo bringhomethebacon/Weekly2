@@ -51,11 +51,8 @@ const HomePageTable: React.FC<HomePageTableProps> = ({
             dataIndex: 'id',
           },
           {
-            title: '评分',
-            dataIndex: 'Score',
-            render: (text, record, index, action) => {
-              return <Rate disabled value={record.Score} />;
-            },
+            title: '年级',
+            dataIndex: 'grade',
           },
         ];
 

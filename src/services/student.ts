@@ -37,12 +37,17 @@ export async function getWeekly(
 }
 
 // 修改密码
-export async function updatePWD(id: number, password: string) {
+export async function updatePWD(
+  id: number,
+  password1: string,
+  password2: string,
+) {
   return request('/api/student/update', {
     method: 'put',
     params: {
       id,
-      password,
+      password1,
+      password2,
     },
   });
 }

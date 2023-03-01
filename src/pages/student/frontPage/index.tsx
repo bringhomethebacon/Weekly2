@@ -85,7 +85,7 @@ const FrontPage: React.FC = () => {
       dataIndex: 'score',
       hideInSearch: true,
       render: (text, record, index, action) => {
-        return <Rate disabled defaultValue={record.score} />;
+        return <Rate disabled value={record.score} />;
       },
     },
   ];

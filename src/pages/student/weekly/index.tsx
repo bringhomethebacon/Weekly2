@@ -17,7 +17,7 @@ const Weekly: React.FC = () => {
         message.success('提交成功');
       })
       .catch(() => {
-        message.error('提交失败');
+        message.error('提交失败,一周只能提交一次');
       });
   };
 

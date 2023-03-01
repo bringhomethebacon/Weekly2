@@ -10,7 +10,6 @@ import CreateTeacher from '@/components/CreateTeacher';
 import { getTeachers, deleteTeacher } from '@/services/admin';
 
 const Teacher: React.FC = () => {
-  const { initialState, setInitialState } = useModel('@@initialState');
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const ref = React.useRef<any>();
@@ -35,7 +34,7 @@ const Teacher: React.FC = () => {
       editable: false,
     },
     {
-      title: '学号',
+      title: '教师编号',
       key: 'id',
       dataIndex: 'id',
       editable: false,
@@ -48,7 +47,7 @@ const Teacher: React.FC = () => {
         <a
           key="editable"
           onClick={() => {
-            deleteTeacher(Number(record.id))
+            deleteTeacher(record.id)
               .then(() => {
                 message.success('删除成功');
               })

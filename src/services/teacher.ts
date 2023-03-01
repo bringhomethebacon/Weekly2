@@ -2,7 +2,7 @@ import { request } from 'umi';
 
 // 获取所有学生
 export async function getAllStudent(
-  teacher_id: number,
+  teacher_id: number | string,
   page_size?: number,
   current?: number,
   student_name?: string,
@@ -22,7 +22,7 @@ export async function getAllStudent(
 
 // 创建学生
 export async function creaetStudent(
-  teacher_id: number,
+  teacher_id: number | string,
   id: number,
   student_name: string,
   phone?: number,
@@ -52,7 +52,7 @@ export async function creaetStudent(
 
 // 修改密码
 export async function updatePWD(
-  teacher_id: number,
+  teacher_id: number | string,
   id: number,
   password: string,
   role: string,
@@ -65,7 +65,7 @@ export async function updatePWD(
 
 // 获取所有周报
 export async function getWeeklys(
-  teacher_id: number,
+  teacher_id: number | string,
   page_size?: number,
   current?: number,
   status?: number,
@@ -97,7 +97,7 @@ export async function comment(id: number, comment: string, score: number) {
 
 // 返回未提交周报的人
 export async function unCommit(
-  teacher_id: number,
+  teacher_id: number | string,
   page_size: number,
   current: number,
   start_time?: string,
@@ -117,7 +117,7 @@ export async function unCommit(
 
 // 获取人数
 export async function getNumbers(
-  teacher_id: number,
+  teacher_id: number | string,
   start_time: string,
   end_time: string,
 ) {
@@ -133,7 +133,7 @@ export async function getNumbers(
 
 // 修改学生信息
 export async function updateStudent(
-  teacher_id: number,
+  teacher_id: number | string,
   id: number,
   phone?: number,
   grade?: string,

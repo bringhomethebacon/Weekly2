@@ -11,9 +11,11 @@ const UpdatePWD: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
 
   const onFinish = (values: any) => {
-    updatePWD(initialState?.userID, values.password).then(() => {
-      message.success('密码修改成功');
-    });
+    updatePWD(initialState?.userID, values.oldPassword, values.password).then(
+      () => {
+        message.success('密码修改成功');
+      },
+    );
   };
 
   return (
@@ -26,6 +28,19 @@ const UpdatePWD: React.FC = () => {
           wrapperCol={{ span: 16 }}
           onFinish={onFinish}
         >
+          <Form.Item
+            name="oldPassword"
+            label="旧密码"
+            rules={[
+              {
+                required: true,
+                message: '请输入你的密码',
+              },
+            ]}
+            hasFeedback
+          >
+            <Input.Password />
+          </Form.Item>
           <Form.Item
             name="password"
             label="新密码"

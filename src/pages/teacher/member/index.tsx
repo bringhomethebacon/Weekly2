@@ -109,7 +109,6 @@ const Member: React.FC = () => {
           rowKey="id"
           editable={{
             onSave: (key: RecordKey, row: Record<string, any>) => {
-              console.log(key, row, 'onSave');
               return updateStudent(
                 initialState?.userID,
                 row.id,

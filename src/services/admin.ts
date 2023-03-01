@@ -9,7 +9,7 @@ export async function getTeachers(page_size: number, current: number) {
 }
 
 // 创建老师
-export async function createTeacher(id: number, teacher_name: string) {
+export async function createTeacher(id: number | string, teacher_name: string) {
   return request('/api/create/teacher', {
     method: 'post',
     data: { id, teacher_name },
@@ -17,7 +17,7 @@ export async function createTeacher(id: number, teacher_name: string) {
 }
 
 // 删除老师
-export async function deleteTeacher(id: number) {
+export async function deleteTeacher(id: number | string) {
   return request('/api/delete/teacher', {
     method: 'delete',
     params: {

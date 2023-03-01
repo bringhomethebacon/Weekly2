@@ -88,17 +88,10 @@ const CreateMember: React.FC<CreateMemberProps> = ({
           <Input placeholder="请输入联系方式" />
         </Form.Item>
         <Form.Item name="grade" label="年级">
-          <Select>
-            <Select.Option value="研一">研一</Select.Option>
-            <Select.Option value="研二">研二</Select.Option>
-            <Select.Option value="研三">研三</Select.Option>
-          </Select>
+          <Input placeholder="请输入年级" />
         </Form.Item>
         <Form.Item name="category" label="类别">
-          <Select>
-            <Select.Option value="专硕">专硕</Select.Option>
-            <Select.Option value="学硕">学硕</Select.Option>
-          </Select>
+          <Input placeholder="请输入类别" />
         </Form.Item>
         <Form.Item name="specialized" label="专业">
           <Input placeholder="请输入专业" />
@@ -107,7 +100,7 @@ const CreateMember: React.FC<CreateMemberProps> = ({
           <Input placeholder="请输入研究方向" />
         </Form.Item>
         <Form.Item name="gender" label="性别">
-          <Select>
+          <Select placeholder="请输入研究方向">
             <Select.Option value="男">男</Select.Option>
             <Select.Option value="女">女</Select.Option>
           </Select>
